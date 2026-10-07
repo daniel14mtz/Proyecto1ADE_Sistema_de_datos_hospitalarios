@@ -2,7 +2,7 @@
 	"name": "ds_monitor",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "linked_service_dataLake",
+			"referenceName": "ls_datalake",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

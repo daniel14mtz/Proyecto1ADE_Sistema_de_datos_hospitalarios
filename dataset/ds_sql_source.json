@@ -2,7 +2,7 @@
 	"name": "ds_sql_source",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "linked_service_sql",
+			"referenceName": "ls_sql",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

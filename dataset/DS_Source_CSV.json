@@ -2,7 +2,7 @@
 	"name": "DS_Source_CSV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "linked_service_dataLake",
+			"referenceName": "ls_datalake",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

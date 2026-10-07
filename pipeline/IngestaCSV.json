@@ -242,10 +242,6 @@
 													"type": "String"
 												}
 											}
-										},
-										"linkedServiceName": {
-											"referenceName": "linked_service_sql",
-											"type": "LinkedServiceReference"
 										}
 									}
 								]
