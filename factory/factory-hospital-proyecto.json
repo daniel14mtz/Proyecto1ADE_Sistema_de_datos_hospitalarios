@@ -1,0 +1,15 @@
+{
+	"name": "factory-hospital-proyecto",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6c95dae8-a23c-47c1-9ec0-06220b1644e2",
+		"tenantId": "e9b39aa0-3fd0-4cc5-9086-b940b0a51656"
+	}
+}

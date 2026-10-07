@@ -1,0 +1,35 @@
+{
+	"name": "ds_sql_bronze",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linked_service_dataLake",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container_sink": {
+				"type": "string"
+			},
+			"folder_sink": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().folder_sink",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().container_sink",
+					"type": "Expression"
+				}
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

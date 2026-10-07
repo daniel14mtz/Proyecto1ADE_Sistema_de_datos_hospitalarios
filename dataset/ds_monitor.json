@@ -1,0 +1,24 @@
+{
+	"name": "ds_monitor",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linked_service_dataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "archivos_procesados.csv",
+				"fileSystem": "monitor"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
