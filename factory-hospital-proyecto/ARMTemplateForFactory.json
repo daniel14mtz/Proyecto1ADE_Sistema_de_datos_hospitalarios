@@ -60,7 +60,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"containerPath": {
-										"value": "@variables('container_source')",
+										"value": "@pipeline().parameters.container_source",
 										"type": "Expression"
 									}
 								}
@@ -118,7 +118,7 @@
 													"type": "Expression"
 												},
 												"container_souce": {
-													"value": "@variables('container_source')",
+													"value": "@pipeline().parameters.container_source",
 													"type": "Expression"
 												}
 											}
@@ -208,7 +208,7 @@
 																"type": "Expression"
 															},
 															"container_souce": {
-																"value": "@variables('container_source')",
+																"value": "@pipeline().parameters.container_source",
 																"type": "Expression"
 															}
 														}
@@ -220,7 +220,7 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"container_sink": {
-																"value": "@variables('container_sink')",
+																"value": "@pipeline().parameters.container_sink",
 																"type": "Expression"
 															},
 															"folder_sink": {
@@ -338,14 +338,12 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"variables": {
+				"parameters": {
 					"container_source": {
-						"type": "String",
-						"defaultValue": "source"
+						"type": "string"
 					},
 					"container_sink": {
-						"type": "String",
-						"defaultValue": "bronze"
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -385,7 +383,14 @@
 					{
 						"name": "SQL",
 						"type": "ExecutePipeline",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "CSV",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"secureInput": false
 						},
@@ -402,6 +407,20 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"container_source": {
+						"type": "String",
+						"defaultValue": "source"
+					},
+					"container_sink": {
+						"type": "String",
+						"defaultValue": "bronze"
+					},
+					"esquema_source": {
+						"type": "String",
+						"defaultValue": "dbo"
+					}
 				},
 				"annotations": [],
 				"lastPublishTime": "2026-10-07T17:53:16Z"
@@ -444,7 +463,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"esquema_source": {
-										"value": "@variables('esquema_source')",
+										"value": "@pipeline().parameters.esquema_source",
 										"type": "Expression"
 									},
 									"table_source": " "
@@ -514,7 +533,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"esquema_source": {
-													"value": "@variables('esquema_source')",
+													"value": "@pipeline().parameters.esquema_source",
 													"type": "Expression"
 												},
 												"table_source": {
@@ -530,7 +549,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"container_sink": {
-													"value": "@variables('container_sink')",
+													"value": "@pipeline().parameters.container_sink",
 													"type": "Expression"
 												},
 												"folder_sink": {
@@ -548,13 +567,13 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"variables": {
+				"parameters": {
 					"esquema_source": {
-						"type": "String",
+						"type": "string",
 						"defaultValue": "dbo"
 					},
 					"container_sink": {
-						"type": "String",
+						"type": "string",
 						"defaultValue": "bronze"
 					}
 				},
@@ -783,6 +802,45 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_sql')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_datalake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_datalake_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_datalake_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sql')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_sql_properties_typeProperties_server')]",
+					"database": "[parameters('ls_sql_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_sql_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_sql_password')]"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/cdcDiagnoses')]",
@@ -1178,48 +1236,8 @@
 					},
 					"mode": "Microbatch"
 				},
-				"status": "Stopped",
 				"allowVNetOverride": false,
 				"id": "d451b2ac9beb47c3a278a35d88c91a23"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_datalake')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ls_datalake_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_datalake_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_sql')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_sql_properties_typeProperties_server')]",
-					"database": "[parameters('ls_sql_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_sql_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_sql_password')]"
-					}
-				}
 			},
 			"dependsOn": []
 		}
