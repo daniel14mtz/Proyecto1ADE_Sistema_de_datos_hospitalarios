@@ -20,7 +20,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"containerPath": {
-								"value": "@variables('container_source')",
+								"value": "@pipeline().parameters.container_source",
 								"type": "Expression"
 							}
 						}
@@ -78,7 +78,7 @@
 											"type": "Expression"
 										},
 										"container_souce": {
-											"value": "@variables('container_source')",
+											"value": "@pipeline().parameters.container_source",
 											"type": "Expression"
 										}
 									}
@@ -168,7 +168,7 @@
 														"type": "Expression"
 													},
 													"container_souce": {
-														"value": "@variables('container_source')",
+														"value": "@pipeline().parameters.container_source",
 														"type": "Expression"
 													}
 												}
@@ -180,7 +180,7 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"container_sink": {
-														"value": "@variables('container_sink')",
+														"value": "@pipeline().parameters.container_sink",
 														"type": "Expression"
 													},
 													"folder_sink": {
@@ -295,14 +295,12 @@
 				}
 			}
 		],
-		"variables": {
+		"parameters": {
 			"container_source": {
-				"type": "String",
-				"defaultValue": "source"
+				"type": "string"
 			},
 			"container_sink": {
-				"type": "String",
-				"defaultValue": "bronze"
+				"type": "string"
 			}
 		},
 		"annotations": [],

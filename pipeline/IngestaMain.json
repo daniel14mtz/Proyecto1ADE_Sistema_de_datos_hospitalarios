@@ -21,7 +21,14 @@
 			{
 				"name": "SQL",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
@@ -35,6 +42,20 @@
 				}
 			}
 		],
+		"variables": {
+			"container_source": {
+				"type": "String",
+				"defaultValue": "source"
+			},
+			"container_sink": {
+				"type": "String",
+				"defaultValue": "bronze"
+			},
+			"esquema_source": {
+				"type": "String",
+				"defaultValue": "dbo"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2026-10-07T17:53:16Z"
 	},

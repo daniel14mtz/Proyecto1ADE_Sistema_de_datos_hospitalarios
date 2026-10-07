@@ -29,7 +29,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"esquema_source": {
-								"value": "@variables('esquema_source')",
+								"value": "@pipeline().parameters.esquema_source",
 								"type": "Expression"
 							},
 							"table_source": " "
@@ -99,7 +99,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"esquema_source": {
-											"value": "@variables('esquema_source')",
+											"value": "@pipeline().parameters.esquema_source",
 											"type": "Expression"
 										},
 										"table_source": {
@@ -115,7 +115,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container_sink": {
-											"value": "@variables('container_sink')",
+											"value": "@pipeline().parameters.container_sink",
 											"type": "Expression"
 										},
 										"folder_sink": {
@@ -130,13 +130,13 @@
 				}
 			}
 		],
-		"variables": {
+		"parameters": {
 			"esquema_source": {
-				"type": "String",
+				"type": "string",
 				"defaultValue": "dbo"
 			},
 			"container_sink": {
-				"type": "String",
+				"type": "string",
 				"defaultValue": "bronze"
 			}
 		},
