@@ -242,6 +242,10 @@
 													"type": "String"
 												}
 											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_sql",
+											"type": "LinkedServiceReference"
 										}
 									}
 								]
