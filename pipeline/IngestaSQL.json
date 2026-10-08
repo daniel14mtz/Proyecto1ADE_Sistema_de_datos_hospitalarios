@@ -57,74 +57,88 @@
 					},
 					"activities": [
 						{
-							"name": "CopySQLtoBronze",
-							"type": "Copy",
+							"name": "If Condition1",
+							"type": "IfCondition",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
+								"expression": {
+									"value": "@or(\r\n    equals(item().TABLE_NAME, 'systranschemas'),\r\n    equals(item().TABLE_NAME, 'control_archivos')\r\n)",
+									"type": "Expression"
 								},
-								"sink": {
-									"type": "ParquetSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "ParquetWriteSettings"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "ds_sql_source",
-									"type": "DatasetReference",
-									"parameters": {
-										"esquema_source": {
-											"value": "@pipeline().parameters.esquema_source",
-											"type": "Expression"
+								"ifFalseActivities": [
+									{
+										"name": "CopySQLtoBronze",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
 										},
-										"table_source": {
-											"value": "@item().TABLE_NAME",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "ds_sql_bronze",
-									"type": "DatasetReference",
-									"parameters": {
-										"container_sink": {
-											"value": "@pipeline().parameters.container_sink",
-											"type": "Expression"
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "AzureSqlSource",
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
 										},
-										"folder_sink": {
-											"value": "@item().TABLE_NAME",
-											"type": "Expression"
-										}
+										"inputs": [
+											{
+												"referenceName": "ds_sql_source",
+												"type": "DatasetReference",
+												"parameters": {
+													"esquema_source": {
+														"value": "@pipeline().parameters.esquema_source",
+														"type": "Expression"
+													},
+													"table_source": {
+														"value": "@item().TABLE_NAME",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_sql_bronze",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_sink": {
+														"value": "@pipeline().parameters.container_sink",
+														"type": "Expression"
+													},
+													"folder_sink": {
+														"value": "@item().TABLE_NAME",
+														"type": "Expression"
+													}
+												}
+											}
+										]
 									}
-								}
-							]
+								]
+							}
 						}
 					]
 				}
